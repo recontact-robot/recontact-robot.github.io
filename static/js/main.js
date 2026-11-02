@@ -26,7 +26,7 @@
   } else if ('IntersectionObserver' in window) {
     var visibility = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) play(entry.target);
+        if (entry.isIntersecting && !entry.target.closest('[data-pane][hidden]')) play(entry.target);
         else if (!entry.target.paused) entry.target.pause();
       });
     }, { threshold: 0.25 });
@@ -61,13 +61,19 @@
 
   /* Switches: each [data-twin] shows the [data-pane] its pressed button names. Switches nest
      (task family > Real / Sim), so a switch only touches buttons and panes it owns.
-     Hidden videos leave the viewport observer, so only the visible pane plays. */
+     Hidden videos leave the viewport observer, so only the visible pane plays; a stacked pane
+     (.pane-stack, kept in layout so switching does not change the page height) is paused here. */
   function own(selector, twin, fn) {
     each(selector, function (el) { if (el.parentNode.closest('[data-twin]') === twin) fn(el); }, twin);
   }
   function show(twin, name) {
     own('button[data-show]', twin, function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-show') === name)); });
-    own('[data-pane]', twin, function (pane) { pane.hidden = pane.getAttribute('data-pane') !== name; });
+    own('[data-pane]', twin, function (pane) {
+      pane.hidden = pane.getAttribute('data-pane') !== name;
+      if (pane.parentNode.classList.contains('pane-stack')) {
+        each('video[data-autoplay]', function (v) { if (pane.hidden) v.pause(); else if (!reduceMotion && v.offsetParent) play(v); }, pane);
+      }
+    });
     twin.setAttribute('data-view', name);
   }
   each('[data-twin]', function (twin) {
@@ -75,6 +81,28 @@
       button.addEventListener('click', function () { show(twin, button.getAttribute('data-show')); });
     });
   });
+  /* Camera switches ([data-angles]): each cell holds one video per camera; the shown one continues
+     from the other's time, since the hardware cameras are synchronized by audio. */
+  each('[data-angles]', function (root) {
+    each('button[data-angle-show]', function (button) {
+      button.addEventListener('click', function () {
+        var name = button.getAttribute('data-angle-show');
+        if (root.getAttribute('data-angle') === name) return;
+        each('button[data-angle-show]', function (b) { b.setAttribute('aria-pressed', String(b === button)); }, root);
+        each('.media', function (cell) {
+          var from = cell.querySelector('video[data-angle]:not([data-angle="' + name + '"])');
+          var to = cell.querySelector('video[data-angle="' + name + '"]');
+          if (!from || !to) return;
+          var t = from.currentTime;
+          from.pause();
+          if (to.readyState >= 1 && to.duration) to.currentTime = t % to.duration;
+          else to.addEventListener('loadedmetadata', function () { to.currentTime = t % to.duration; }, { once: true });
+        }, root);
+        root.setAttribute('data-angle', name);
+      });
+    }, root);
+  });
+
   /* A link to a hidden pane (#tube) opens it first. */
   function openHash() {
     var pane = location.hash && document.getElementById(location.hash.slice(1));

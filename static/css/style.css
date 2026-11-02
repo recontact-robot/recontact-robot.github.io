@@ -18,6 +18,13 @@
   --accent: #2a78d6;
   --accent-strong: #1b5fb0;
   --accent-soft: #e8f1fb;
+  /* Apple-style materials (author 2026-11-02): light glass for controls over video, dark glass for tags. */
+  --glass-light: rgba(255, 255, 255, .52);
+  --glass-dark: rgba(22, 24, 28, .42);
+  --glass-blur: blur(18px) saturate(180%);
+  --glass-blur-dark: blur(18px) saturate(115%);  /* low saturation: bright floor tape would tint the tag */
+  --glass-edge: inset 0 0 0 .5px rgba(255, 255, 255, .55), inset 0 1px 0 rgba(255, 255, 255, .5);
+  --glass-shadow: 0 4px 16px rgba(0, 0, 0, .12);
   --radius: 14px;
   --radius-sm: 10px;
   --wrap: 1120px;
@@ -217,7 +224,10 @@ h3 {
 .section-head.center .lead { margin-left: auto; margin-right: auto; }
 .prose { max-width: 800px; color: var(--ink-2); }
 .prose p:last-child { margin-bottom: 0; }
-.subhead { margin-top: 72px; }
+.abstract { max-width: 860px; margin: 0 auto; }
+.abstract p { margin: 0; font-size: 17.5px; line-height: 1.72; color: var(--ink-2); text-align: justify; hyphens: auto; }
+.figure-full { margin: 0; }
+.figure-full a.media { display: block; cursor: zoom-in; }
 
 /* ------------------------------------------------------------------ media */
 
@@ -238,9 +248,10 @@ h3 {
   z-index: 2;
   padding: 3px 9px;
   border-radius: 999px;
-  background: rgba(15, 18, 22, .62);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: var(--glass-dark);
+  -webkit-backdrop-filter: var(--glass-blur-dark);
+  backdrop-filter: var(--glass-blur-dark);
+  box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .22), 0 2px 10px rgba(0, 0, 0, .10);
   color: #fff;
   font-size: 12px;
   font-weight: 600;
@@ -248,22 +259,25 @@ h3 {
   line-height: 1.5;
   pointer-events: none;
 }
-.badge.light { background: rgba(255, 255, 255, .86); color: var(--ink-2); box-shadow: 0 0 0 1px rgba(0, 0, 0, .06); }
+.badge.light { background: var(--glass-light); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); color: var(--ink-2); box-shadow: var(--glass-edge), var(--glass-shadow); }
 .label {
   position: absolute;
   left: 10px;
   bottom: 10px;
   z-index: 2;
-  padding: 4px 10px;
-  border-radius: 8px;
-  background: rgba(15, 18, 22, .66);
+  padding: 3px 11px;
+  border-radius: 999px;
+  background: var(--glass-dark);
+  -webkit-backdrop-filter: var(--glass-blur-dark);
+  backdrop-filter: var(--glass-blur-dark);
+  box-shadow: inset 0 0 0 .5px rgba(255, 255, 255, .22), 0 2px 10px rgba(0, 0, 0, .10);
   color: #fff;
   font-size: 13.5px;
   font-weight: 600;
   line-height: 1.4;
   pointer-events: none;
 }
-.label.ours { background: var(--accent); }
+.label.ours { background: rgba(42, 120, 214, .78); }  /* ReContact blue, as glass */
 
 figure { margin: 0; }
 .cap {
@@ -307,6 +321,7 @@ figure { margin: 0; }
 .cmp-grid .media { aspect-ratio: var(--ar, .75); }
 .cmp-grid video { width: 100%; height: 100%; object-fit: contain; }
 .cmp-grid .src { background: #0f1217; }
+.cmp-grid.cmp-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); max-width: calc(var(--ar, .75) * 5 * 300px + 40px); }
 
 /* First-person grasps: video above hand-only retarget (both 16:9), whole-body reference (4:5) beside. */
 .ego { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 12px; align-items: start; max-width: 1040px; margin: 0 auto; }
@@ -375,8 +390,9 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .grid-3, .grid-5, .grid-6 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .row-3 { gap: 10px; }
   .row-3 > * { flex-basis: calc((100% - 10px) / 2); }
-  .cmp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .cmp-grid, .cmp-grid.cmp-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .lead { font-size: 17.5px; }
+  .abstract p { font-size: 16px; text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -393,28 +409,42 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   stroke-linejoin: round;
 }
 
-/* Extended results: collapsed until the visitor clicks the "Extended results" kicker (author 2026-10-27). */
-.fold > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-.fold > summary::-webkit-details-marker { display: none; }
-.fold > summary::after { content: ""; width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-45deg); transition: transform .2s; }
-.fold[open] > summary::after { transform: rotate(45deg); }
-.fold > summary:hover { opacity: .75; }
-.fold[open] > summary { margin-bottom: 10px; }
-
 /* Real / Sim switches (after wholebodydex.com): a pill segment over a clip or beside a block title. */
-.seg { display: inline-flex; gap: 2px; padding: 2px; border-radius: 999px; background: rgba(255, 255, 255, .9); box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.seg button { padding: 3px 11px; border: 0; border-radius: 999px; background: transparent; color: var(--ink-2); font: 600 12px/1.5 var(--font); cursor: pointer; }
+.seg { display: inline-flex; gap: 0; padding: 3px; border-radius: 999px; background: var(--glass-light); box-shadow: var(--glass-edge), var(--glass-shadow); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+.seg button { padding: 3px 11px; border: 0; border-radius: 999px; background: transparent; color: rgba(20, 23, 28, .78); font: 600 12px/1.5 var(--font); cursor: pointer; transition: background-color .2s ease, box-shadow .2s ease, color .2s ease; }
 .seg button:hover { color: var(--ink); }
-.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+/* Selected: a white thumb on the glass track (iOS segmented control). */
+.seg button[aria-pressed="true"] { background: rgba(255, 255, 255, .96); color: var(--ink); box-shadow: 0 1px 3px rgba(0, 0, 0, .14), 0 0 0 .5px rgba(0, 0, 0, .04); }
+/* On the white page there is nothing to blur: the same control as a quiet grey track. */
+.block-head .seg, .switch-row .seg { background: rgba(118, 118, 128, .12); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+/* Browsers without backdrop blur: more opaque fills keep text readable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .seg { background: rgba(255, 255, 255, .88); }
+  .badge, .label { background: rgba(22, 24, 28, .66); }
+  .label.ours { background: var(--accent); }
+}
 .seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 [data-twin] [data-pane][hidden] { display: none !important; }
 .twin { aspect-ratio: var(--ar); }
 .twin > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
 .twin > video[data-pane="sim"] { object-fit: cover; object-position: 50% 0; }  /* taller renders: crop the floor, keep the head */
 .twin > .seg { position: absolute; top: 10px; left: 10px; z-index: 3; }
-.twin .badge { left: auto; right: 10px; }
+.twin .badge { left: auto; right: 10px; }  /* speed badges top right, like the long chain */
 .block-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 14px; }
 .block-head h3 { margin: 0; }
+/* Filmed chains: six 604:720 cells, three per row in weight order. */
+.hrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.hrow.hrow-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }  /* two simulation cells at half width: nearly the height of the six real cells */
+.hrow > .media { aspect-ratio: var(--ar); }
+.hrow video { width: 100%; height: 100%; object-fit: contain; }
+/* Real / Sim panes in one grid cell: the hidden pane keeps its space, so switching keeps the page height. */
+.pane-stack { display: grid; }
+.pane-stack > [data-pane] { grid-area: 1 / 1; align-self: center; }
+.pane-stack > [data-pane][hidden] { display: block !important; visibility: hidden; }
+@media (max-width: 640px) { .hrow, .hrow.hrow-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; } }
+.seg-pair { display: inline-flex; flex-wrap: wrap; gap: 8px; }
+[data-angles][data-angle="front"] video[data-angle="side"], [data-angles][data-angle="side"] video[data-angle="front"] { display: none; }
+[data-angles][data-view="sim"] .seg[aria-label="Camera"] { display: none; }  /* the simulation cells are side views only */
 .sim-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; max-width: 640px; margin: 0 auto; }
 .sim-solo { max-width: 340px; margin: 0 auto; }
 .sim-solo + .cap { text-align: center; }
@@ -431,3 +461,30 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
   .seg-lg button { padding: 5px 12px; font-size: 13px; }
 }
 .clip[data-pane] { margin-bottom: 18px; }
+
+/* ------------------------------------------- task-family viewer (family3d.js) */
+
+.f3d { aspect-ratio: 1600 / 1006; background: linear-gradient(#f4f5f5, #e8eaea); }
+.f3d-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; transition: opacity .2s; }
+.f3d-canvas:active { cursor: grabbing; }
+.f3d-loading .f3d-canvas { opacity: .55; }
+.f3d-ctl { position: absolute; right: 10px; bottom: 10px; z-index: 2; display: none; align-items: center; gap: 8px; padding: 3px 12px 3px 3px; border-radius: 999px; background: rgba(255, 255, 255, .9); box-shadow: 0 0 0 1px rgba(0, 0, 0, .08); }
+.f3d-ready .f3d-ctl { display: flex; }
+.f3d-ctl input { width: min(150px, 22vw); margin: 0; accent-color: var(--ink); cursor: pointer; }
+.f3d-play { position: relative; width: 26px; height: 26px; border: 0; border-radius: 50%; background: var(--ink); cursor: pointer; }
+.f3d-play:focus-visible, .f3d-ctl input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.f3d-play::before, .f3d-play::after { content: ''; position: absolute; top: 8px; width: 3px; height: 10px; border-radius: 1px; background: #fff; }
+.f3d-play::before { left: 9px; }
+.f3d-play::after { left: 14px; }
+.f3d-play[data-state="paused"]::after { display: none; }
+.f3d-play[data-state="paused"]::before { left: 10px; top: 7px; width: 0; height: 0; border-radius: 0; background: none; border-style: solid; border-width: 6px 0 6px 9px; border-color: transparent transparent transparent #fff; }
+.f3d-map { position: relative; }
+.f3d-svg { position: absolute; inset: 0; width: 100%; height: 100%; outline: none; touch-action: manipulation; }
+.f3d-svg.near { cursor: pointer; }
+.f3d-svg:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: var(--radius); }
+.f3d-hover { fill: none; stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; pointer-events: none; }
+.f3d-halo { fill: none; stroke: #fff; stroke-width: 6; vector-effect: non-scaling-stroke; pointer-events: none; }
+.f3d-sel { fill: none; stroke: var(--accent); stroke-width: 3; vector-effect: non-scaling-stroke; pointer-events: none; }
+.f3d-only { display: none; }
+.f3d-on .f3d-only { display: revert; }
+.f3d-on .f3d-off { display: none; }
