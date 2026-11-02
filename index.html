@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReContact</title>
+  <meta name="description" content="ReContact turns human video into an editable, object-centric contact plan that builds whole-body humanoid references, rewards physical contact during learning, and generates references at new object placements.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ReContact: Reconstruct and Retarget Human Contacts from Video for Contact-Rich Humanoid Manipulation">
+  <meta property="og:description" content="An editable, object-centric contact plan for humanoid support transfer, from human video to a Unitree G1.">
+  <meta property="og:image" content="static/images/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="icon" href="static/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="static/css/style.css?v=aa6206016fe7">
+</head>
+<body>
+
+<!-- Icon sprite. Stroke icons inherit stroke/fill from .ic; the logo sets its own colors. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-logo" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="15" fill="#2a78d6" stroke="none"/>
+    <rect x="19" y="19" width="29" height="26" rx="3" fill="none" stroke="#fff" stroke-width="4.5"/>
+    <circle cx="19" cy="32" r="6.5" fill="#fff" stroke="none"/>
+  </symbol>
+  <symbol id="i-paper" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+  <symbol id="i-quote" viewBox="0 0 24 24"><path d="M7 7h4v4c0 3-1.5 5-4 6"/><path d="M15 7h4v4c0 3-1.5 5-4 6"/></symbol>
+  <symbol id="i-slides" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M12 17v4"/><path d="M8 21h8"/></symbol>
+</svg>
+
+<nav class="nav" id="nav" aria-label="Sections">
+  <div class="nav-inner">
+    <a class="brand" href="#top"><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#i-logo"/></svg><span>ReContact</span></a>
+    <div class="nav-links">
+      <a href="#video">Video</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#references">Video to robot</a>
+      <a href="#retargeting">Retargeting</a>
+      <a href="#families">Task families</a>
+      <a href="#extended">Extended</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1><span class="re">Re</span>Contact</h1>
+    <p class="subtitle">Reconstruct and Retarget Human Contacts from Video for Contact&#8209;Rich Humanoid Manipulation</p>
+    <div class="buttons">
+      <span class="btn" aria-disabled="true"><svg class="ic" aria-hidden="true"><use href="#i-paper"/></svg>Paper <span class="soon">coming soon</span></span>
+      <a class="btn" href="#video"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Video</a>
+      <span class="btn" aria-disabled="true"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg>Code <span class="soon">coming soon</span></span>
+    </div>
+  </div>
+  <div class="wrap-wide">
+    <figure class="teaser">
+      <div class="media">
+        <video data-autoplay autoplay muted loop playsinline preload="auto" poster="static/videos/posters/teaser.jpg" src="static/videos/teaser.mp4" width="1416" height="810"></video>
+        <span class="badge">Real robot · 1.5×</span>
+      </div>
+      <figcaption class="teaser-caption">A Unitree G1 moves a 1.9&nbsp;kg box from a side clamp through its thigh to a two-palm hold, and back. Front view and side close-up.</figcaption>
+    </figure>
+  </div>
+</header>
+
+<section id="video" class="section-soft">
+  <div class="wrap">
+    <div class="section-head center">
+      <span class="kicker">Supplementary video</span>
+      <h2>Simulation and hardware in three minutes</h2>
+      <p class="lead">English subtitles, no audio.</p>
+    </div>
+    <figure class="media player">
+      <video controls preload="none" playsinline poster="static/videos/posters/recontact_supplementary.jpg?v=749a84a73442" src="static/videos/recontact_supplementary.mp4?v=03a75c092c63" width="1920" height="1080"></video>
+    </figure>
+  </div>
+</section>
+
+<section id="hardware">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">Unitree G1</span>
+      <h2>Real robot and simulation</h2>
+    </div>
+
+    <div class="block">
+      <h3>Regrasp, carry, regrasp, place on the floor</h3>
+      <div class="media twin" data-twin data-view="real" style="--ar: 1.7778"><div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div><video data-pane="real" data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_route_ground_cam1.jpg" src="static/videos/hw_route_ground_cam1.mp4" width="1280" height="720"></video><video data-pane="sim" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_route_ground.jpg" src="static/videos/sim_route_ground.mp4" width="960" height="540"></video><span class="badge">2×</span></div>
+      <p class="cap">Side-clamp pickup, thigh-supported regrasp, turn and loaded walk, reverse regrasp and floor placement.</p>
+    </div>
+
+    <div class="block" data-twin data-view="real">
+      <div class="block-head">
+        <h3>Forward and reverse thigh-supported regrasps</h3>
+        <div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div>
+      </div>
+      <div data-pane="real">
+        <div class="grid-6">
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_a088.jpg" src="static/videos/hw_chain_a088.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box A · 0.88&nbsp;kg</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_b07.jpg" src="static/videos/hw_chain_b07.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box B · 0.7&nbsp;kg</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_b10.jpg" src="static/videos/hw_chain_b10.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box B · 1.0&nbsp;kg</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_b14.jpg" src="static/videos/hw_chain_b14.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box B · 1.4&nbsp;kg</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_b15.jpg" src="static/videos/hw_chain_b15.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box B · 1.5&nbsp;kg</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_chain_b19.jpg" src="static/videos/hw_chain_b19.mp4" width="604" height="720"></video><span class="badge">1.5×</span><span class="label">Box B · 1.9&nbsp;kg</span></div>
+        </div>
+      </div>
+      <div data-pane="sim" hidden>
+        <div class="sim-pair">
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t2long.jpg" src="static/videos/sim_t2long.mp4" width="750" height="900"></video><span class="label">Thigh-supported regrasp</span></div>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t2r.jpg" src="static/videos/sim_t2r.mp4" width="750" height="900"></video><span class="label">Reverse regrasp</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Walk-then-grasp</h3>
+      <div class="walk-row">
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_walk.jpg" src="static/videos/sim_walk.mp4" width="750" height="900"></video><span class="badge light">Simulation</span></div>
+        <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_walk.jpg" src="static/videos/hw_walk.mp4" width="1024" height="720"></video><span class="badge">Real robot · 1.25×</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Under-arm transfers and irregular-object grasps</h3>
+      <div class="grid-4">
+      <div class="media twin" data-twin data-view="real1" style="--ar: 0.9389"><div class="seg" role="group" aria-label="View"><button type="button" data-show="real1" aria-pressed="true">Box 1</button><button type="button" data-show="real2" aria-pressed="false">Box 2</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div><video data-pane="real1" data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t1_box1.jpg?v=09b99497e1d2" src="static/videos/hw_t1_box1.mp4?v=34681e66e6ff" width="676" height="720"></video><video data-pane="real2" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t1_box2.jpg?v=749be0ad244b" src="static/videos/hw_t1_box2.mp4?v=87ae745a2688" width="676" height="720"></video><video data-pane="sim" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t1.jpg" src="static/videos/sim_t1.mp4" width="750" height="900"></video><span class="label">Under-arm box carry</span></div>
+      <div class="media twin" data-twin data-view="real" style="--ar: 0.9389"><div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div><video data-pane="real" data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t3.jpg?v=2c17e1f9ee58" src="static/videos/hw_t3.mp4?v=42cf82dac52f" width="676" height="720"></video><video data-pane="sim" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t3.jpg" src="static/videos/sim_t3.mp4" width="750" height="900"></video><span class="label">Tissue-pack transfer</span></div>
+      <div class="media twin" data-twin data-view="real" style="--ar: 0.9389"><div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div><video data-pane="real" data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t6a.jpg" src="static/videos/hw_t6a.mp4" width="676" height="720"></video><video data-pane="sim" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t6a.jpg" src="static/videos/sim_t6a.mp4" width="750" height="900"></video><span class="label">Spray-bottle grasp</span></div>
+      <div class="media twin" data-twin data-view="real" style="--ar: 0.9389"><div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div><video data-pane="real" data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t6b.jpg" src="static/videos/hw_t6b.mp4" width="676" height="720"></video><video data-pane="sim" hidden data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t6b.jpg" src="static/videos/sim_t6b.mp4" width="750" height="900"></video><span class="label">Banana grasp</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="references" class="section-soft">
+  <div class="wrap" data-twin data-view="spray">
+    <div class="section-head" id="egocentric">
+      <span class="kicker">From first-person video</span>
+      <h2>Hand-held objects, whole-body references</h2>
+      <p class="lead">Hand-held grasps filmed from the first-person view become whole-body G1 references.</p>
+    </div>
+    <div class="switch-row"><div class="seg seg-lg" role="group" aria-label="Task"><button type="button" data-show="spray" aria-pressed="true">Spray-bottle grasp</button><button type="button" data-show="banana" aria-pressed="false">Banana grasp</button><button type="button" data-show="bottle" aria-pressed="false">Bottle grasp</button></div></div>
+    <figure class="clip" id="ref-spray" data-pane="spray">
+      <div class="ego" data-sync>
+        <div class="stack">
+          <div class="media"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/demo_t6a.jpg" src="static/videos/demo_t6a.mp4" width="960" height="540"></video><span class="label">First-person video</span></div>
+          <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hand_t6a.jpg" src="static/videos/hand_t6a.mp4" width="960" height="540"></video><span class="label">RH56F1 hand-only retarget</span></div>
+        </div>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/compose_t6a.jpg" src="static/videos/compose_t6a.mp4" width="720" height="900"></video><span class="label">Whole-body reference</span></div>
+      </div>
+      <p class="cap">The hand is retargeted to a floating RH56F1 hand, rendered from the calibrated source camera in sync with the video; a planned whole-body approach brings the 23-DoF G1 to the grasp.</p>
+    </figure>
+    <figure class="clip" id="ref-banana" data-pane="banana" hidden>
+      <div class="ego" data-sync>
+        <div class="stack">
+          <div class="media"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/demo_t6b.jpg" src="static/videos/demo_t6b.mp4" width="960" height="540"></video><span class="label">First-person video</span></div>
+          <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hand_t6b.jpg" src="static/videos/hand_t6b.mp4" width="960" height="540"></video><span class="label">RH56F1 hand-only retarget</span></div>
+        </div>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/compose_t6b.jpg" src="static/videos/compose_t6b.mp4" width="720" height="900"></video><span class="label">Whole-body reference</span></div>
+      </div>
+      <p class="cap">The hand is retargeted to a floating RH56F1 hand, rendered from the calibrated source camera in sync with the video; a planned whole-body approach brings the 23-DoF G1 to the grasp.</p>
+    </figure>
+    <figure class="clip" id="ref-bottle" data-pane="bottle" hidden>
+      <div class="ego" data-sync>
+        <div class="stack">
+          <div class="media"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/demo_t5.jpg?v=f21e66531cef" src="static/videos/demo_t5.mp4?v=37314b4e4f75" width="960" height="540"></video><span class="label">First-person video</span></div>
+          <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hand_t5.jpg" src="static/videos/hand_t5.mp4" width="960" height="540"></video><span class="label">RH56F1 hand-only retarget</span></div>
+        </div>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/compose_t5.jpg" src="static/videos/compose_t5.mp4" width="720" height="900"></video><span class="label">Whole-body reference</span></div>
+      </div>
+      <p class="cap">The hand is retargeted to a floating RH56F1 hand, rendered from the calibrated source camera in sync with the video; a planned whole-body approach brings the 23-DoF G1 to a grasp fitted to this retarget.</p>
+    </figure>
+  </div>
+</section>
+
+<section id="retargeting">
+  <div class="wrap" data-twin data-view="boxmedium">
+    <div class="section-head">
+      <span class="kicker">From third-person video</span>
+      <h2>Same inputs, five retargeters</h2>
+      <p class="lead">Every method receives the same body and object track and runs on G1 29-DoF.</p>
+    </div>
+    <div class="switch-row"><div class="seg seg-lg" role="group" aria-label="Task"><button type="button" data-show="boxmedium" aria-pressed="true">Medium-box carry</button><button type="button" data-show="handscarry" aria-pressed="false">Two-hand carry</button><button type="button" data-show="regrasp" aria-pressed="false">Thigh-supported regrasp</button><button type="button" data-show="floor" aria-pressed="false">Placement on the floor</button><button type="button" data-show="tissue" aria-pressed="false">Tissue-pack transfer</button></div></div>
+    <figure class="clip" id="cmp-boxmedium" data-pane="boxmedium">
+      <div class="cmp-grid" data-sync style="--ar: 0.7500">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_boxmedium.jpg" src="static/videos/cmpsrc_boxmedium.mp4" width="480" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_ours.jpg" src="static/videos/cmp_boxmedium_ours.mp4" width="450" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_omni.jpg" src="static/videos/cmp_boxmedium_omni.mp4" width="450" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_umr.jpg" src="static/videos/cmp_boxmedium_umr.mp4" width="450" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_umr_cmap100.jpg" src="static/videos/cmp_boxmedium_umr_cmap100.mp4" width="450" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_hoi.jpg" src="static/videos/cmp_boxmedium_hoi.mp4" width="450" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+    <figure class="clip" id="cmp-handscarry" data-pane="handscarry" hidden>
+      <div class="cmp-grid" data-sync style="--ar: 0.7500">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_boxmedium_handscarry.jpg" src="static/videos/cmpsrc_boxmedium_handscarry.mp4" width="480" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_handscarry_ours.jpg" src="static/videos/cmp_boxmedium_handscarry_ours.mp4" width="450" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_handscarry_omni.jpg" src="static/videos/cmp_boxmedium_handscarry_omni.mp4" width="450" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_handscarry_umr.jpg" src="static/videos/cmp_boxmedium_handscarry_umr.mp4" width="450" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_handscarry_umr_cmap100.jpg" src="static/videos/cmp_boxmedium_handscarry_umr_cmap100.mp4" width="450" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_boxmedium_handscarry_hoi.jpg" src="static/videos/cmp_boxmedium_handscarry_hoi.mp4" width="450" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+    <figure class="clip" id="cmp-regrasp" data-pane="regrasp" hidden>
+      <div class="cmp-grid" data-sync style="--ar: 0.7500">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_slide2bottom_box16cm.jpg" src="static/videos/cmpsrc_slide2bottom_box16cm.mp4" width="640" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_slide2bottom_box16cm_ours.jpg" src="static/videos/cmp_slide2bottom_box16cm_ours.mp4" width="450" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_slide2bottom_box16cm_omni.jpg" src="static/videos/cmp_slide2bottom_box16cm_omni.mp4" width="450" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_slide2bottom_box16cm_umr.jpg" src="static/videos/cmp_slide2bottom_box16cm_umr.mp4" width="450" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_slide2bottom_box16cm_umr_cmap100.jpg" src="static/videos/cmp_slide2bottom_box16cm_umr_cmap100.mp4" width="450" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_slide2bottom_box16cm_hoi.jpg" src="static/videos/cmp_slide2bottom_box16cm_hoi.mp4" width="450" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+    <figure class="clip" id="cmp-floor" data-pane="floor" hidden>
+      <div class="cmp-grid" data-sync style="--ar: 0.7500">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_placebox2ground.jpg" src="static/videos/cmpsrc_placebox2ground.mp4" width="202" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_placebox2ground_ours.jpg" src="static/videos/cmp_placebox2ground_ours.mp4" width="450" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_placebox2ground_omni.jpg" src="static/videos/cmp_placebox2ground_omni.mp4" width="450" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_placebox2ground_umr.jpg" src="static/videos/cmp_placebox2ground_umr.mp4" width="450" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_placebox2ground_umr_cmap100.jpg" src="static/videos/cmp_placebox2ground_umr_cmap100.mp4" width="450" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_placebox2ground_hoi.jpg" src="static/videos/cmp_placebox2ground_hoi.mp4" width="450" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+    <figure class="clip" id="cmp-tissue" data-pane="tissue" hidden>
+      <div class="cmp-grid" data-sync style="--ar: 0.7500">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_tissuehold.jpg?v=52dc1b68f017" src="static/videos/cmpsrc_tissuehold.mp4?v=3ddd2a3bf1b4" width="202" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_tissuehold_ours.jpg?v=3f4345c3233d" src="static/videos/cmp_tissuehold_ours.mp4?v=19db66349f1d" width="450" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_tissuehold_omni.jpg?v=5aafda4ed77b" src="static/videos/cmp_tissuehold_omni.mp4?v=9a45a1bd84c2" width="450" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_tissuehold_umr.jpg?v=9c3e1ea478ea" src="static/videos/cmp_tissuehold_umr.mp4?v=1050d12852de" width="450" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_tissuehold_umr_cmap100.jpg?v=fed69498fce2" src="static/videos/cmp_tissuehold_umr_cmap100.mp4?v=f2a9de0ec99b" width="450" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_tissuehold_hoi.jpg?v=62fa5176edb3" src="static/videos/cmp_tissuehold_hoi.mp4?v=0494c9eb8682" width="450" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<section id="families" class="section-soft">
+  <div class="wrap" data-twin data-view="bottle">
+    <span class="kicker">Task families</span>
+    <div class="switch-row"><div class="seg seg-lg" role="group" aria-label="Task family"><button type="button" data-show="bottle" aria-pressed="true">Bottle grasp</button><button type="button" data-show="tube" aria-pressed="false">Tube transfer</button></div></div>
+    <div id="bottle" data-pane="bottle">
+      <div class="section-head">
+        <h2>One bottle demonstration, 200 references</h2>
+      </div>
+      <div class="block">
+        <div class="pair" style="grid-template-columns: minmax(0, 1.5905fr) minmax(0, 1.3397fr); --pair-ar: 2.9302">
+          <figure>
+            <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/t5_family.jpg" src="static/videos/t5_family.mp4" width="1600" height="1006"></video><span class="badge light">Kinematic references</span></div>
+            <figcaption class="cap">Nine of the 200 references.</figcaption>
+          </figure>
+          <figure>
+            <div class="media white"><img src="static/images/coverage.jpg?v=5f1371db6c59" alt="Grasp-rate map of Ours (ReContact) over the generated bottle workspace, with 98.4% success" width="1400" height="1045" loading="lazy"></div>
+            <figcaption class="cap">Grasp rate over the generated workspace for Ours (ReContact). White dots: 200 references.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="block" data-twin data-view="real">
+        <div class="block-head">
+          <h3>Policy rollouts</h3>
+          <div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div>
+        </div>
+        <div data-pane="real">
+          <div class="grid-4">
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t5_p1.jpg" src="static/videos/hw_t5_p1.mp4" width="676" height="720"></video><span class="label">Position 1</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t5_p2.jpg" src="static/videos/hw_t5_p2.mp4" width="676" height="720"></video><span class="label">Position 2</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t5_p3.jpg" src="static/videos/hw_t5_p3.mp4" width="676" height="720"></video><span class="label">Position 3</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_t5_p4.jpg" src="static/videos/hw_t5_p4.mp4" width="676" height="720"></video><span class="label">Position 4</span></div>
+          </div>
+          <p class="cap">Deployment bottle-family policy with marker-based object localization.</p>
+        </div>
+        <div data-pane="sim" hidden>
+          <div class="sim-solo"><div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t5.jpg" src="static/videos/sim_t5.mp4" width="750" height="900"></video><span class="label">Bottle grasp</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div id="tube" data-pane="tube" hidden>
+      <div class="section-head">
+        <h2>One tube transfer, 247 references</h2>
+      </div>
+      <div class="block">
+        <div class="pair" style="grid-template-columns: minmax(0, 1.5905fr) minmax(0, 1.0294fr); --pair-ar: 2.6199">
+          <figure>
+            <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/tube_family.jpg" src="static/videos/tube_family.mp4" width="1600" height="1006"></video><span class="badge light">Kinematic references</span></div>
+            <figcaption class="cap">Nine of the 247 references.</figcaption>
+          </figure>
+          <figure>
+            <div class="media white"><img src="static/images/tube_coverage.jpg" alt="Tube-transfer success over the generated workspace and the exterior band, with coverage maps comparing single-reference and family policies" width="1400" height="1360" loading="lazy"></div>
+            <figcaption class="cap">Transfer success over the generated workspace: ReContact family policy (top) and single-reference versus family policies (bottom). White dots: the 247 references. Star: the source position.</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="block" data-twin data-view="real">
+        <div class="block-head">
+          <h3>Policy rollouts</h3>
+          <div class="seg" role="group" aria-label="View"><button type="button" data-show="real" aria-pressed="true">Real</button><button type="button" data-show="sim" aria-pressed="false">Sim</button></div>
+        </div>
+        <div data-pane="real">
+          <div class="grid-4">
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p1.jpg" src="static/videos/hw_tube_p1.mp4" width="596" height="720"></video><span class="label">Trial 1</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p2.jpg" src="static/videos/hw_tube_p2.mp4" width="596" height="720"></video><span class="label">Trial 2</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p3.jpg" src="static/videos/hw_tube_p3.mp4" width="596" height="720"></video><span class="label">Trial 3</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p4.jpg" src="static/videos/hw_tube_p4.mp4" width="596" height="720"></video><span class="label">Trial 4</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p5.jpg" src="static/videos/hw_tube_p5.mp4" width="596" height="720"></video><span class="label">Trial 5</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p6.jpg" src="static/videos/hw_tube_p6.mp4" width="596" height="720"></video><span class="label">Trial 6</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p7.jpg" src="static/videos/hw_tube_p7.mp4" width="596" height="720"></video><span class="label">Trial 7</span></div>
+          <div class="media"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/hw_tube_p9.jpg" src="static/videos/hw_tube_p9.mp4" width="596" height="720"></video><span class="label">Trial 8</span></div>
+          </div>
+          <p class="cap">One family policy. The tube position comes from the head camera's RGB image, and the nearest family reference runs.</p>
+        </div>
+        <div data-pane="sim" hidden>
+          <div class="sim-solo"><div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/sim_t4_hw.jpg?v=48c03727c15b" src="static/videos/sim_t4_hw.mp4?v=6f5498e98826" width="750" height="900"></video></div></div>
+          <p class="cap">The deployed checkpoint, at the reference nearest the source position.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="extended">
+  <div class="wrap">
+    <details class="fold">
+      <summary class="kicker">Extended results</summary>
+    <div class="section-head">
+      <h2>One human video, multiple robot bodies</h2>
+    </div>
+    <figure class="clip">
+      <h3>Medium-box carry</h3>
+      <div class="media white ref-video" style="--ar: 1.2914"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/ref_boxmedium.jpg" src="static/videos/ref_boxmedium.mp4" width="1046" height="810"></video></div>
+    </figure>
+    <figure class="clip">
+      <h3>Two-hand carry</h3>
+      <div class="media white ref-video" style="--ar: 1.2395"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/ref_boxmedium_handscarry.jpg" src="static/videos/ref_boxmedium_handscarry.mp4" width="1004" height="810"></video></div>
+    </figure>
+    <div class="pair clip" style="grid-template-columns: minmax(0, 0.6617fr) minmax(0, 0.8617fr); --pair-ar: 1.5234">
+      <figure>
+        <h3>Thigh-supported regrasp</h3>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/ref_slide2bottom_box16cm.jpg" src="static/videos/ref_slide2bottom_box16cm.mp4" width="536" height="810"></video></div>
+      </figure>
+      <figure>
+        <h3>Placement on the floor</h3>
+        <div class="media white"><video data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/ref_placebox2ground.jpg" src="static/videos/ref_placebox2ground.mp4" width="698" height="810"></video></div>
+      </figure>
+    </div>
+    <figure class="clip">
+      <h3>Chair push</h3>
+      <div class="cmp-grid" data-sync style="--ar: 1.7722">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_human.jpg" src="static/videos/ref_chairpush_human.mp4" width="638" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_g1_29dof.jpg" src="static/videos/ref_chairpush_g1_29dof.mp4" width="638" height="360"></video><span class="label">G1 · 29 DoF</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_g1_23dof.jpg" src="static/videos/ref_chairpush_g1_23dof.mp4" width="638" height="360"></video><span class="label">G1 · 23 DoF</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_h1_2.jpg" src="static/videos/ref_chairpush_h1_2.mp4" width="638" height="360"></video><span class="label">H1-2 · 27 DoF</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_h2.jpg" src="static/videos/ref_chairpush_h2.mp4" width="638" height="360"></video><span class="label">H2 · 31 DoF</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/ref_chairpush_t1.jpg" src="static/videos/ref_chairpush_t1.mp4" width="638" height="360"></video><span class="label">Booster T1 · 23 DoF</span></div>
+      </div>
+    </figure>
+
+    <div class="section-head subhead">
+      <h2>Retargeting comparison: chair push</h2>
+      <p class="lead">Every method receives the same body and object track and runs on G1 29-DoF.</p>
+    </div>
+    <figure class="clip">
+      <div class="cmp-grid" data-sync style="--ar: 1.1567">
+        <div class="media src"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmpsrc_chairpush.jpg" src="static/videos/cmpsrc_chairpush.mp4" width="640" height="360"></video><span class="label">Human video</span></div>
+        <div class="media white"><video data-lead data-autoplay muted loop playsinline preload="none" poster="static/videos/posters/cmp_chairpush_ours.jpg" src="static/videos/cmp_chairpush_ours.mp4" width="694" height="600"></video><span class="label ours">ReContact</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_chairpush_omni.jpg" src="static/videos/cmp_chairpush_omni.mp4" width="694" height="600"></video><span class="label">OmniRetarget</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_chairpush_umr.jpg" src="static/videos/cmp_chairpush_umr.mp4" width="694" height="600"></video><span class="label">UMR</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_chairpush_umr_cmap100.jpg" src="static/videos/cmp_chairpush_umr_cmap100.mp4" width="694" height="600"></video><span class="label">UMR + contact map</span></div>
+        <div class="media white"><video data-follow muted loop playsinline preload="none" poster="static/videos/posters/cmp_chairpush_hoi.jpg" src="static/videos/cmp_chairpush_hoi.mp4" width="694" height="600"></video><span class="label">HOI-Retarget</span></div>
+      </div>
+    </figure>
+    </details>
+  </div>
+</section>
+
+<script src="static/js/main.js?v=1ea40f30bceb"></script>
+</body>
+</html>
